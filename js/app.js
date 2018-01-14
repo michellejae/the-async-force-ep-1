@@ -58,11 +58,9 @@ function getAllFilms () {
   let allFilms = JSON.parse(this.responseText);
   // title is getting your results array. 
   let info = allFilms.results
-
-  
   // use .map is allowing us to loop thru our array of movie titles. we are creating the list
   // just for organization of the titles and plants
-  info.map(function (element){
+  info.map(function (element, index){
     let film = document.createElement('li'); // creating list
     film.className = 'film';
     document.getElementById('filmList').appendChild(film);
@@ -74,10 +72,34 @@ function getAllFilms () {
     planetsTitle.className = 'planetsTitle';
     film.appendChild(planetsTitle);
     planetsTitle.innerHTML = 'Planets'
-  })
 
-  info.map(function(element){
-    console.log(element.planets)
+    let filmPlanets = document.createElement('ul');
+    filmPlanets.className = 'filmplanets';
+    film.appendChild(filmPlanets);
+
+    let planetArr = element.planets;
+
+    planetArr.forEach(function (element){
+      let planetReq = new XMLHttpRequest();
+      planetReq.addEventListener("load", getPlanets);
+      planetReq.open("GET", element);
+      planetReq.send();
+
+      function getPlanets (){
+        let formatPlanets = JSON.parse(this.response);
+        let planetName = formatPlanets.name;
+
+        let planets = document.createElement('li');
+        planets.className = 'planet';
+        filmPlanets.appendChild(planets);
+
+        let createPlanetName = document.createElement('h4');
+        createPlanetName.className = 'planetName';
+        planets.appendChild(createPlanetName);
+        createPlanetName.innerHTML = planetName
+      }
+    })
+    
   })
 }
 
