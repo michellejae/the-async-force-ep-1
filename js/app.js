@@ -31,7 +31,7 @@ personTwoReq.send();
 
 function personTWoRequest() {
   // logging my response text so i can evaluate it derp derp. 
- // console.log('2nd Info', this.responseText);
+  // console.log('2nd Info', this.responseText);
   let person14 = JSON.parse(this.responseText);
   document.getElementById('person14Name').innerHTML = person14.name;
 
@@ -53,14 +53,14 @@ allFilmsReq.addEventListener("load", getAllFilms);
 allFilmsReq.open("GET", "https://swapi.co/api/films/");
 allFilmsReq.send();
 
-function getAllFilms () {
+function getAllFilms() {
   //console.log(this.responseText)
   let allFilms = JSON.parse(this.responseText);
   // title is getting your results array. 
   let info = allFilms.results
   // use .map is allowing us to loop thru our array of movie titles. we are creating the list
   // just for organization of the titles and plants
-  info.map(function (element, index){
+  info.map(function (element, index) {
     let film = document.createElement('li'); // creating list
     film.className = 'film';
     document.getElementById('filmList').appendChild(film);
@@ -79,13 +79,14 @@ function getAllFilms () {
 
     let planetArr = element.planets;
 
-    planetArr.forEach(function (element){
+    // now looping thru the planet arr to fire the XML request on every element of that array
+    planetArr.forEach(function (element) {
       let planetReq = new XMLHttpRequest();
       planetReq.addEventListener("load", getPlanets);
       planetReq.open("GET", element);
       planetReq.send();
 
-      function getPlanets (){
+      function getPlanets() {
         let formatPlanets = JSON.parse(this.response);
         let planetName = formatPlanets.name;
 
@@ -96,10 +97,9 @@ function getAllFilms () {
         let createPlanetName = document.createElement('h4');
         createPlanetName.className = 'planetName';
         planets.appendChild(createPlanetName);
-        createPlanetName.innerHTML = planetName
-      }
-    })
-    
-  })
-}
+        createPlanetName.innerHTML = planetName;
+      };
+    });
 
+  });
+};
